@@ -8,7 +8,7 @@ Fastcoref was mentioned in the [medium article](https://medium.com/neo4j/entity-
 
 Fastcoref is supposed to be better for LLM genAI accuracy as covered in Michael Wood's comments and other [medium article](https://medium.com/@michaelwood33311/creating-accurate-ai-coreference-resolution-with-fastcoref-20f06044bdf9).
 
-Fastcoreref takes more time with Colab (CPU or free T4 GPU runtime type) than coreferee. Wasn't bad on a local machine (Ubuntu 22.04 / AMD 5950x CPU / 3090 GPU).
+Fastcoreref takes more time with Colab (CPU or free T4 GPU runtime type) than coreferee. Wasn't bad on a local machine (Ubuntu 22.04 / AMD 5950x CPU / 3090 GPU) with python file instead of Jupyter notebook. 
 Also don't have the coreferee problem of having to rebuild from source / spacy version issue.
 
 This llama-relik-fastcoref.ipynb can be open and run with [Google Colab](https://colab.research.google.com/) after setting up a free account.
