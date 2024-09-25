@@ -19,7 +19,7 @@ from multiprocessing import freeze_support
 os.environ["OPENAI_API_KEY"] = "sk-your-openai-key"
 username="neo4j"
 password="your neo4j password"
-url="neo4j+s://your-aura-mumbers.databases.neo4j.io"
+url="neo4j+s://your-aura-instance-id.databases.neo4j.io"
 
 nest_asyncio.apply()
 
