@@ -60,7 +60,8 @@ def main():
     # Use on Pro Collab with GPU or high end local machine / GPU
     relik = RelikPathExtractor(
     #   model="relik-ie/relik-cie-small", model_config={"skip_metadata": True, "device":"cuda"}
-       model="relik-ie/relik-relation-extraction-small", model_config={"skip_metadata": True, "device":"cuda"}
+    #   model="relik-ie/relik-relation-extraction-small", model_config={"skip_metadata": True, "device":"cuda"}
+        model="relik-ie/relik-cie-small", model_config={"skip_metadata": True, "device":"cpu"}
     )
 
     print("start openai")
