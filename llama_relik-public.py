@@ -16,6 +16,22 @@ from llama_index.core import PropertyGraphIndex
 from llama_index.extractors.relik.base import RelikPathExtractor
 from multiprocessing import freeze_support
 
+text = '''The International Space Station (ISS) is an awe-inspiring feat 
+of human engineering and collaboration. Orbiting the Earth at an 
+altitude of approximately 408 kilometers, the ISS serves as a research 
+laboratory and living space for astronauts from around the world. 
+NASA, in partnership with other space agencies such as Roscosmos, 
+ESA, JAXA, and CSA, has been instrumental in the construction and 
+operation of this remarkable structure. The ISS has facilitated 
+groundbreaking scientific experiments and discoveries in various fields, 
+including physics, biology, and astronomy. Notable astronauts like 
+Chris Hadfield and Scott Kelly have spent significant time aboard 
+the ISS, conducting experiments and gathering data to expand our 
+knowledge of space exploration. However, with the advancement of 
+commercial space travel, companies like SpaceX and Blue Origin are 
+aiming to make space more accessible and potentially challenge the 
+ISS's monopoly on human space presence.'''
+
 os.environ["OPENAI_API_KEY"] = "sk-your-openai-key"
 username="neo4j"
 password="your neo4j password"
@@ -40,17 +56,23 @@ def main():
         refresh_schema=False
     )
 
-    NUMBER_OF_ARTICLES = 10
-    news = pd.read_csv("https://raw.githubusercontent.com/tomasonjo/blog-datasets/main/news_articles.csv")
-    news = news.head(NUMBER_OF_ARTICLES)
+    #NUMBER_OF_ARTICLES = 1
+    #news = pd.read_csv("https://raw.githubusercontent.com/tomasonjo/blog-datasets/main/news_articles.csv")
+    #news = news.head(NUMBER_OF_ARTICLES)
 
     print("start coref")
-    news["coref_text"] = news["text"].apply(coref_text)
-    documents = [
-        Document(text=f"{row['title']}: {row['coref_text']}") for i, row in news.iterrows()
-    ]
 
-    #print(coref_text(news['text'][5]))
+    #news["coref_text"] = news["text"].apply(coref_text)
+    #documents = [
+    #    Document(text=f"{row['title']}: {row['coref_text']}") for i, row in news.iterrows()
+    #]
+    #print(news['text'][1])
+    #print(news['coref_text'][1])
+
+    coref = coref_text(text)
+    document = Document(text=f"{'title'}: {coref}")
+    documents = []
+    documents.append(document)
 
     print("start relik")
     #relik = RelikPathExtractor(
@@ -59,9 +81,11 @@ def main():
 
     # Use on Pro Collab with GPU or high end local machine / GPU
     relik = RelikPathExtractor(
-    #   model="relik-ie/relik-cie-small", model_config={"skip_metadata": True, "device":"cuda"}
-    #   model="relik-ie/relik-relation-extraction-small", model_config={"skip_metadata": True, "device":"cuda"}
-        model="relik-ie/relik-cie-small", model_config={"skip_metadata": True, "device":"cpu"}
+        #model="relik-ie/relik-cie-small", model_config={"skip_metadata": True, "device":"cpu"}
+        #model="relik-ie/relik-cie-xl", model_config={"skip_metadata": True, "device":"cpu"}
+        #model="relik-ie/relik-relation-extraction-small", model_config={"skip_metadata": True, "device":"cpu"}
+        model="relik-ie/relik-relation-extraction-large", model_config={"skip_metadata": True, "device":"cpu"}
+        #model="relik-ie/relik-relation-extraction-large", model_config={"skip_metadata": True, "device":"cuda"}
     )
 
     print("start openai")
@@ -82,7 +106,8 @@ def main():
     query_engine = index.as_query_engine(include_text=True)
 
     print("start query")
-    response = query_engine.query("What happened at Ryanair?")
+    #response = query_engine.query("What happened at Ryanair?")
+    response = query_engine.query("Who has been on the ISS?")
 
     print(str(response))
 
